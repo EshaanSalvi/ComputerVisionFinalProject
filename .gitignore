@@ -1,9 +1,3 @@
-# Ignore YOLO training output
-runs/
-
-# Ignore large weight files
-*.pt
-
 # Ignore videos (too large for repo)
 *.mp4
 *.mov
@@ -28,4 +22,5 @@ billboard.jpg
 # dataset/
 # my_frames/
 # selected_frames/
+# runs/
 # (Your partner needs these)

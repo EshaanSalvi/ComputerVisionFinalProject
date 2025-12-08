@@ -1,8 +1,31 @@
+# Ignore YOLO training output
 runs/
-dataset/
-my_frames/
-selected_frames/
+
+# Ignore large weight files
 *.pt
+
+# Ignore videos (too large for repo)
 *.mp4
 *.mov
+
+# Ignore Python cache
 __pycache__/
+*.pyc
+
+# Ignore referee folder (you don't want this)
+referee/
+referee.zip
+
+# Ignore old homework files accidentally included
+HW4.py
+Homework1_Problems1-4_eshaansalvi.pdf
+Homework1_USERNAME.ipynb
+
+# Ignore random unused images
+billboard.jpg
+
+# ---- DO NOT IGNORE these folders ----
+# dataset/
+# my_frames/
+# selected_frames/
+# (Your partner needs these)

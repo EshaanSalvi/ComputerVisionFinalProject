@@ -140,28 +140,45 @@ class ShotDetector:
                         self.fade_counter = self.fade_frames
 
     def display_score(self):
-        # Add text
-        text = str(self.makes) + " / " + str(self.attempts)
-        cv2.putText(self.frame, text, (50, 125), cv2.FONT_HERSHEY_SIMPLEX, 3, (255, 255, 255), 6)
-        cv2.putText(self.frame, text, (50, 125), cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 0), 3)
+        # ---------- Makes / Attempts ----------
+        text = f"{self.makes} / {self.attempts}"
+        cv2.putText(self.frame, text, (50, 125),
+                    cv2.FONT_HERSHEY_SIMPLEX, 3, (255, 255, 255), 6)
+        cv2.putText(self.frame, text, (50, 125),
+                    cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 0), 3)
 
-        # Add overlay text for shot result if it exists
+        # ---------- Accuracy percentage ----------
+        if self.attempts > 0:
+            acc = 100.0 * self.makes / self.attempts
+            acc_text = f"Accuracy: {acc:.0f}%"
+        else:
+            acc_text = "Accuracy: 0%"
+
+        # draw it a bit below the makes/attempts line
+        cv2.putText(self.frame, acc_text, (50, 200),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 255, 255), 4)
+        cv2.putText(self.frame, acc_text, (50, 200),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 0), 2)
+
+        # ---------- Overlay text ("Make"/"Miss") ----------
         if hasattr(self, 'overlay_text'):
-            # Calculate text size to position it at the right top corner
-            (text_width, text_height), _ = cv2.getTextSize(self.overlay_text, cv2.FONT_HERSHEY_SIMPLEX, 3, 6)
-            text_x = self.frame.shape[1] - text_width - 40  # Right alignment with some margin
-            text_y = 100  # Top margin
+            (text_width, text_height), _ = cv2.getTextSize(
+                self.overlay_text, cv2.FONT_HERSHEY_SIMPLEX, 3, 6)
+            text_x = self.frame.shape[1] - text_width - 40
+            text_y = 100
+            cv2.putText(self.frame, self.overlay_text, (text_x, text_y),
+                        cv2.FONT_HERSHEY_SIMPLEX, 3, self.overlay_color, 6)
 
-            # Display overlay text with color (overlay_color)
-            cv2.putText(self.frame, self.overlay_text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 3,
-                        self.overlay_color, 6)
-            # cv2.putText(self.frame, self.overlay_text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 0), 3)
-
-        # Gradually fade out color after shot
+        # ---------- Fade overlay ----------
         if self.fade_counter > 0:
             alpha = 0.2 * (self.fade_counter / self.fade_frames)
-            self.frame = cv2.addWeighted(self.frame, 1 - alpha, np.full_like(self.frame, self.overlay_color), alpha, 0)
+            self.frame = cv2.addWeighted(
+                self.frame, 1 - alpha,
+                np.full_like(self.frame, self.overlay_color),
+                alpha, 0
+            )
             self.fade_counter -= 1
+
 
 
 if __name__ == "__main__":

@@ -1,6 +1,5 @@
 # Ignore videos (too large for repo)
-*.mp4
-*.mov
+
 
 # Ignore Python cache
 __pycache__/

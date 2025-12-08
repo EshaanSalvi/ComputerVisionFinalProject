@@ -1,0 +1,8 @@
+runs/
+dataset/
+my_frames/
+selected_frames/
+*.pt
+*.mp4
+*.mov
+__pycache__/

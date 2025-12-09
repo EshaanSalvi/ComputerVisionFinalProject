@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en"><head>  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Computer Vision Course Project
+  | ECE, Virginia Tech | Fall 2021: ECE 4554/5554</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+<!-- Le styles -->  
+  <link href="css/bootstrap.css" rel="stylesheet">
+<style>
+body {
+padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+.vis {
+color: #3366CC;
+}
+.data {
+color: #FF9900;
+}
+</style>
+  
+<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements --><!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<div class="container">
+<div class="page-header">
+
+<!-- Title and Name --> 
+<h1>BVision: Basketball Shot Tracker</h1> 
+<span style="font-size: 20px; line-height: 1.5em;"><strong>Charan Sama and Eshaan Salvi</strong></span><br>
+<span style="font-size: 18px; line-height: 1.5em;">Fall 2025 ECE 4554/5554 Computer Vision Group 44: BVision Final Project Report</span><br>
+<span style="font-size: 18px; line-height: 1.5em;">Virginia Tech</span>
+<hr>
+
+
+<!-- Introduction -->
+<h3>Abstract</h3>
+The goal of this project is to develop a computer vision tracking system called BVision that can automatically track a basketball shooter’s performance and calculate their make-and-miss percentage using recorded video footage. The system will detect and track both the basketball and the rim throughout a shooting session and determine whether each shot results in a make or a miss. It will then display the players' shooting statistics on the video itself. This project aims to make basketball analysis more accessible to people who want to improve their basketball skills. With BVision, players and coaches will be able to evaluate consistency and accuracy from ordinary video clips, enabling more efficient practice sessions and better performance improvement.
+
+<h3>Teaser Figure</h3>
+<div style="text-align: center;">
+  <img src="teaser.png" style="width: 600px;">
+  <p style="font-size: 14px;">
+    Figure 1: Example output of our BVision showing detected ball, rim, path of ball, and real-time accuracy display.
+  </p>
+</div>
+<h3>Introduction</h3>
+<p>
+Basketball is a sport where shooting a ball requires precision, accuracy, and practice to perfect this very important skill. Many players do not have access to something like a tracker to keep track of their shots while they play, so BVision can be used to help instead of using expensive cameras or memberships for coaching. Our motivation for the project is to create accessible software that can be used by anyone and can automatically evaluate the user's shooting performance using a normal video. This project looks into the uses of data-driven basketball practice so it can be accessible to people who have access to any recording device.
+</p>
+
+<p>
+The particular domain of this project falls under Computer Vision, more specifically: object detection, motion analysis, and object classification. There have been prior uses of basketball tracking, but they often run into many errors because of lighting issues, color corruption, or any kind of color transformation. However, the project we built makes sure that we use modern deep learning techniques and YOLO8v based object detectors. This would offer a more advanced and visual way to accurately show the data.
+</p>
+
+<p>
+Our process is a little different from other approaches because instead of using normal tracking systems for making sure the shot goes in, we use YOLO. We trained a YOLO model that would detect the basketball hoop in a shooting environment and implement functions so it can be used for any design. Our contribution is a flexible, accurate, and user-friendly shot tracking pipeline that shows how Computer Vision can be used to simulate and improve upon real-world shooting environments.
+</p>
+
+
+<h3>Approach</h3>
+<p>
+To get the tracker to operate, the system will combine object detection, motion tracking, and event classification into a single pipeline. The first step will involve detecting the basketball and rim in each video frame using a pretrained deep-learning model such as YOLOv8 or MediaPipe. These detections will provide bounding boxes for each object, allowing the program to identify their positions throughout the video. Once the basketball is detected, a Kalman filter or optical-flow tracking algorithm will be applied to maintain the ball’s position across multiple frames, compensating for fast motion and blurs in between frames. The program will then analyze the ball’s trajectory to determine when it intersects the rim’s region of interest. If the ball passes through this region in a downward direction within a defined time window, the system will classify the attempt as a made shot. Otherwise, it will be labeled as a miss. The software will keep a running total of attempts, makes, and misses, and display the results. All components of the project will be implemented in Python using OpenCV, NumPy, and the YOLOv8 framework. These open source utilities will be used to make sure th elogic is integrated and tracked correctly through our classification system.
+</p>
+
+<p>
+We based much of our implementation on a open source project <a href="https://github.com/avishah3/AI-Basketball-Shot-Detection-Tracker" target="_blank">AI-Basketball-Shot-Detection-Tracker</a> by Avi Shah, which similarly uses a YOLOv8 model combined with OpenCV to detect a basketball and hoop and then applies motion and trajectory analysis to classify makes and misses. This code helped us analyze and use key components such as the dataset configuration structure, the general frame-by-frame detection, bounding-box logic in shot_detector.py, and utility functions in utils.py. This was mainly used to make sure we would have a way to clean the noisy detections and tracking object positions. This would be modified so we could work to make those parts fit our own dataset and scoring logic. This was made through our video that we took and would include a refined hoop detection algorithm, adjusted thresholds, and a custom scoring display so it can tailor towards the user more in different environments.
+</p>
+
+<br><br>
+<h3>Experimental Setup and Results</h3>
+<p>
+For the experimental setup, we plan to collect our own dataset consisting of short video clips of a stationary shooter taking shots from a fixed camera position. Each video will last between 30 and 50 seconds and be recorded using a smartphone or a camera mounted. This is essential in making sure the rim is being shown and the camera can detect it. We also want to use online videos and datasets to implement the tracking algorithms. Regarding the datasets, we wanted to use either free throw tracking datasets that would recording multiple shooting attempts, to give the system a proper environment to conduct in. The experiments will involve detection accuracy by calculating the predicted and true bounding boxes for the basketball and rim. Comparing the system would be like interpreting the Intersection over Union, so it can help measure the classification accuracy. We also want to compare YOLOv8 combined with different filtering techniques against an optical-flow-based method and examine how varying parameters like detection and frame rates affect results. We want the project to be successful enough to create an average detection of over 75% determining the outcomes, so it can be used effectively. However, uncertainties may arise due to camera shake, occlusions, and difficulty with lighting. Through these experiments, we would design a basketball shot tracker that can use a vision-based system and can be applied to real-world basketball performance tracking.
+</p>
+
+<p>
+For our dataset, we created a custom basketball–hoop detection dataset using Roboflow. We recorded our own free-throw videos, extracted frames, and manually annotated the basketball and hoop in each image. This would show the specific points for each shot frame by frame, for example when the ball is in the persons hand versus when its in the air the frame values would change. Roboflow then exported our dataset in YOLO format, which made training, validation images, and labels. This ensured that the YOLO model was trained specifically for the shooting environment, camera angle, lighting conditions, and rim position that we set up for through the video. This would ensure that the final video result would have a higher accuracy than generic datasets from sources.
+</p>
+
+
+
+<div style="text-align: center;">
+    <img src="normalcm.png" alt="Normalized Confusion Matrix" width="650">
+    <p>Figure 2: Normalized Confusion Matrix</p>
+</div>
+
+<p>
+The confusion matrix shows the normalized figure for the classifying the basketball, hoop and the background
+for our trained YOLO model. It makes sure it provides a clear visual difference between the different
+backgrounds ensuring accuracy. The ones that are closest to 1.0 or darker in color indicate that the detector
+is highly reliable at distinguishing the two foreground classes from the background. The ones with values that
+are smaller indicate how the model rarely confuses the hoop with he ball. The matrix shows almost no confusion
+between the basketball and hoop, which is crucial for our shot classification logic. This matrix is mainly used
+to ensure that the ball, rim and the trajectory can be correctly analyzed so it can still work with our scoring
+algorithm.
+</p>
+
+
+<div style="text-align: center;">
+    <img src="pccurve.png" alt="Precision Confidence Curve" width="650">
+    <p>Figure 3: Precision Confidence Curve</p>
+</div>
+
+<p>
+The precision confidence curve shows the accuracy between the basketball and the hoop classes. The x-axis is
+the confidence threshold applied to YOLO detections, and the y-axis is the precision between the classes. The
+more confident/right we go into the graph there are less false positives and the confidence threshold for all.
+In the code we chose a lower threshold because it offered a better balance fort the precision recall. This would
+show that the values assigned is sufficient for our application because the trajectory logic can tolerate a small
+number of false detections. Overall, this curve justifies the confidence settings that would track the ball
+smoothly over time, this would allow for proper shot classification.
+</p>
+
+<p>
+Our trained YOLO allowed for a way to detect the basketball and hoop video. This video was imported and named FreeThrows.mov so the file can run the shot_detector.py file. Once detected, the ball points are marked in red dots to show the trajectory of the ball and generate the motion trajectory. This would be shown as it is going to the stabilized hoop position which is set in a box. The scoring zone is also set on the rim so the system can determine whether each shot is a make or a miss and updates the shooting statistics in real time. Overall, this the model produced consistent detections that allowed our trajectory scoring logic to correctly classify makes and misses throughout the classification process.
+</p>
+
+<h3>Qualitative Results</h3>
+<p>
+To better illustrate how our system behaves in real scenarios, we show how the model detects the ball, tracks its trajectory, identifies the hoop, and determines whether an attempt resulted in a made or missed shot.
+</p>
+
+<h3>Ball Tracking</h3>
+<p>
+The figure below shows our tracking system following the basketball throughout its path.
+Each red dot represents the position of the ball allowing for a way to visualize the full trajectory of the ball.
+</p>
+<div style="text-align: center;">
+<img src="tracking.png" alt="Ball Tracking Example" width="600">
+<p>
+Figure 4: This image shows the system tracking the basketball's trajectory with red dots marking its position in each frame. 
+</p>
+</div>
+
+<p>
+Below is another example of a make, showing the ball entering the hoop.
+The system maintains accurate hoop detection and ball position even in varied lighting and positions.
+</p>
+<div style="text-align: center;">
+<img src="make2.png" alt="Make Example 2" width="600">  <img src="make.png" alt="Make Example" width="620">
+
+<p>
+Figure 5: This image shows the system correctly detecting a made shot overlaying "Make". This demonstrates the ball passes downward through the hoop and identifying the attempt as a make.
+</p>
+</div>
+
+<p>
+This figure shows a shot bouncing off the rim. The system detects that the ball does not pass through the hoop,
+correctly identifying the attempt as a miss.
+</p>
+<div style="text-align: center;">
+<img src="miss1.jpg" alt="Miss Example 1" width="600">  <img src="miss2.jpg" alt="Miss Example 2" width="600">
+
+<p>
+Figure 6: This image shows the system overlaying the “Miss” indicator. This demonstrates the system’s ability to consistently identify the missed shots.
+</p>
+</div>
+<h3>Conclusion</h3>
+<p>
+This project demonstrated computer vision techniques that would be paired with the YOLOv8 detection model, this would show how basketball shots can be reliably tracked and evaluate their performance. We used object detection, trajectory, and object classification techniques to create a functional shot tracking system that is capable of identifying makes and misses. Our results show the video dataset we used and the model that it is targeted towards to make a model that can improve detection accuracy in our shooting environment. For the future, we would want to work on making sure we can enhance the complexity of the program by making sure we can shoot in any shooting environment no matter the lighting, camera, or any kind of external conditions. Overall, this project illustrates the practical uses of computer vision techniques to help sport analytics have a stronger premise in the future.
+</p>
+
+<h3>References</h3>
+<p>Code Reference: <a href="https://github.com/avishah3/AI-Basketball-Shot-Detection-Tracker" target="_blank">AI-Basketball-Shot-Detection-Tracker</a> by Avi Shah</p>
+<p>Dataset: https://universe.roboflow.com/models/object-detection</p>
+<p>OpenCV: https://opencv.org/</p>
+<p>Coding: https://pypi.org/project/ultralytics/</p>
+<p>Research: https://medium.com/@tayosablerd/basketball-computer-vision-deep-ish-dive-8fcc7ad4af2c</p>
+<p>Research: https://www.instructables.com/SmartShot-Computer-Vision-Powered-Basketball-Hoop/</p>
+
+
+
+
+
+<br><br>
+
+
+  <hr>
+  <footer> 
+  <p>© Charan Sama and Eshaan Salvi</p>
+  <p>© Github Repo: <a href="https://github.com/EshaanSalvi/ComputerVisionFinalProject" target="_blank">ComputerVisionFinalProject</a></p>
+  </footer>
+</div>
+</div>
+
+<br><br>
+
+</body></html>

@@ -1,5 +1,4 @@
 #This Python script extracts the total number of frames from the video to help us determine the number of fraames needed for the YOLO model training
-
 import cv2
 import os
 

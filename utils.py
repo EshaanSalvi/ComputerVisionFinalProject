@@ -1,3 +1,6 @@
+#Our utils class that is referenced from Github repo AI-Basketball-Shot-Detection by Avi Shah
+#Contains helper functions for shot detection
+
 import math
 import numpy as np
 import torch

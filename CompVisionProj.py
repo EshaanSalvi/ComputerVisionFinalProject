@@ -1,7 +1,9 @@
+#This Python script extracts the total number of frames from the video to help us determine the number of fraames needed for the YOLO model training
+
 import cv2
 import os
 
-video_path = "FreeThrows.mov"   # change this to your video filename
+video_path = "FreeThrows.mov"   #Our free throw shooting video
 output_folder = "my_frames"
 
 os.makedirs(output_folder, exist_ok=True)

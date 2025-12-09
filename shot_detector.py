@@ -1,3 +1,5 @@
+#Our shot detection class that is referenced from Github repo AI-Basketball-Shot-Detection by Avi Shah
+
 from ultralytics import YOLO
 import cv2
 import cvzone
